@@ -1,9 +1,14 @@
-var storageService = require('../Service/storageService');
+const currencyRepository = require('../Repository/currencyRepository');
 
 class actionIndex { // extends Action {
 
-    async run() {
-       return await storageService.select();
+    run() {
+        const repo = new currencyRepository;
+        return repo.getData()
+            .catch(err => {
+                console.log(err);
+                return 'Get data from storage error';
+            });
     }
 }
 

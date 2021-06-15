@@ -1,4 +1,4 @@
-let storageService = require('./../Service/storageService');
+const storageService = require('./../Service/storageService');
 
 class currencyRepository {
     

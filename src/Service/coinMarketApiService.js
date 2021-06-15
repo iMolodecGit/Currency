@@ -8,7 +8,8 @@ class coinMarketApiService extends apiService {
     }
 
     async parse () {
-        let url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+        //@todo replace to config.js
+        const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs = {
             'start': '1',
             'limit': '10',
@@ -22,6 +23,9 @@ class coinMarketApiService extends apiService {
         
         try {
             let response = await this.get(url, qs, headers);
+            if (!response.data || !response.data.data) {
+                throw new Error('Currency api erorr!!! Empty response.');
+            }
             let responseData = response.data;
             let currencyData = responseData.data;
             currencyData.forEach((item) => {
@@ -30,6 +34,7 @@ class coinMarketApiService extends apiService {
             });
         } catch (err) {
             console.log('API call error:', err.message);
+            throw err;
         }
         return ret; 
     }

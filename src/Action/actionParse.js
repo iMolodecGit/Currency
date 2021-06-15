@@ -1,13 +1,19 @@
 
-var loaderService = require('../Service/loaderService');
-var storageService = require('../Service/storageService');
+const loaderService = require('../Service/loaderService');
+const currencyRepository = require('../Repository/currencyRepository');
 
 class actionParse { // extends Action {
 
-   async run() {
-       let data = await loaderService.runAll();
-       storageService.update(data);
-       return data;
+    run() {
+        const repo = new currencyRepository();
+        return loaderService.runAll()
+            .then(data => {
+                return repo.setData(data);
+            })
+            .catch(err => {
+                console.log(err);
+                return 'Set data to storage error';
+            });
     }
 }
 
